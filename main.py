@@ -31,6 +31,8 @@ class WeatherApp(QWidget):
 
         # Layout Manager
         vbox = QVBoxLayout()
+        vbox.setSpacing(10)  # Reduces gap between elements to 10px
+        vbox.setContentsMargins(25, 25, 25, 25)  # Clean outer margins for the window
         vbox.addWidget(self.city_label)
         vbox.addWidget(self.city_input)
         vbox.addWidget(self.get_weather_button)
@@ -55,6 +57,7 @@ class WeatherApp(QWidget):
         self.description_label.setObjectName("description_label")
 
         # CSS styling
+        self.emoji_label.setFixedHeight(130)
         self.setStyleSheet("""
             QLabel, QPushButton{
                 font-family: Comic Sans MS;
@@ -88,6 +91,7 @@ class WeatherApp(QWidget):
             }
             QLabel#emoji_label{
                 font-size: 100px;
+                font-family: Segoe UI emoji;
             }
             QLabel#description_label{
                 font-size: 50px;
@@ -123,7 +127,7 @@ class WeatherApp(QWidget):
                     self.display_error("Forbidden!\nAccess is denied!")
                 case 404:
                     self.display_error(f"Not Found:\n{self.city_input.text()} not found!")
-                    self.city_input.setText(" ")
+                    self.city_input.clear()
                 case 500:
                     self.display_error("Internal Server Error!\nPlease try again later!")
                 case 502:
@@ -147,11 +151,51 @@ class WeatherApp(QWidget):
 
     def display_error(self, message):
         self.temperature_label.setStyleSheet("font-size: 30px;"
-                                             "font-weight: normal;")
+                                             "font-weight: normal;"
+                                             "color: red;")
         self.temperature_label.setText(message)
+        self.emoji_label.clear()
+        self.description_label.clear()
 
     def display_weather(self, data):
-        pass
+        # print(data)
+        self.temperature_label.setStyleSheet("font-size: 75px;"
+                                             "font-weight: bold;")
+        temperature_k = data["main"]["temp"]
+        temperature_c = temperature_k - 273.15
+        temperature_f = (temperature_k * 9 / 5) - 459.67
+        # print(temperature_c)
+        weather_id = data["weather"][0]["id"]
+        weather_description = data["weather"][0]["description"]
+        self.temperature_label.setText(f"{temperature_c:.1f}°C")
+        self.emoji_label.setText(self.get_weather_emoji(weather_id))
+        self.description_label.setText(f"{weather_description}")
+
+    @staticmethod
+    def get_weather_emoji(weather_id):
+        if 200 <= weather_id <= 232:
+            return f"⛈️"
+        elif 300 <= weather_id <= 321:
+            return f"🌧️"
+        elif 500 <= weather_id <= 531:
+            return f"🌧️"
+        elif 600 <= weather_id <= 622:
+            return f"🌨️"
+        elif 701 <= weather_id <= 781:
+            return f"🌫️"
+        elif weather_id == 762:
+            return f"🌋"
+        elif weather_id == 771:
+            return f"💨"
+        elif weather_id == 781:
+            return f"🌪️"
+        elif weather_id == 800:
+            return f"🌤️"
+        elif 801 <= weather_id <= 804:
+            return f"☁️"
+        else:
+            return ""
+
 
 
 if __name__ == "__main__":
