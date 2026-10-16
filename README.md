@@ -1,5 +1,14 @@
 # Weather App - Python
 
+# Installation
+- `pip install PyQt5`
+- `pip install requests`
+- `pip install python.dotenv`
+
+# Environmental Variables
+Create a .env file.  
+`WEATHER_API_KEY=`your weather api key
+
 # Exception Handling
 - **HTTPError**
   - `400` : Bad Request! Please check your input!
