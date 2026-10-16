@@ -13,7 +13,35 @@ class WeatherApp(QWidget):
         self.temperature_label = QLabel("70°F", self)
         self.emoji_label = QLabel("😊", self)
         self.description_label = QLabel("Sunny", self)
+        self.initUI()
 
+    def initUI(self):
+        self.setWindowTitle("Weather App")
+
+        # Layout Manager
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.city_label)
+        vbox.addWidget(self.city_input)
+        vbox.addWidget(self.get_weather_button)
+        vbox.addWidget(self.temperature_label)
+        vbox.addWidget(self.emoji_label)
+        vbox.addWidget(self.description_label)
+        self.setLayout(vbox)
+
+        # Alignment
+        self.city_label.setAlignment(Qt.AlignCenter)
+        self.city_input.setAlignment(Qt.AlignCenter)
+        self.temperature_label.setAlignment(Qt.AlignCenter)
+        self.emoji_label.setAlignment(Qt.AlignCenter)
+        self.description_label.setAlignment(Qt.AlignCenter)
+
+        # Assign unique IDs
+        self.city_label.setObjectName("city_label")
+        self.city_input.setObjectName("city_input")
+        self.get_weather_button.setObjectName("get_weather_button")
+        self.temperature_label.setObjectName("temperature_label")
+        self.emoji_label.setObjectName("emoji_label")
+        self.description_label.setObjectName("description_label")
 
 
 if __name__ == "__main__":
