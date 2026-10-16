@@ -1,7 +1,13 @@
 import sys
+import os
+from dotenv import load_dotenv
 import requests
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout
 from PyQt5.QtCore import Qt
+
+load_dotenv()
+api_key = os.getenv("WEATHER_API_KEY")
+# print(api_key)
 
 
 class WeatherApp(QWidget):
@@ -77,7 +83,6 @@ class WeatherApp(QWidget):
             }
             QLabel#emoji_label{
                 font-size: 100px;
-                font-family: Segoe UI emoji;
             }
             QLabel#description_label{
                 font-size: 50px;
@@ -85,8 +90,13 @@ class WeatherApp(QWidget):
             }
         """)
 
+        # Connect button to the function
+        self.get_weather_button.clicked.connect(self.get_weather)
+
     def get_weather(self):
+        # print("You get the weather")
         pass
+
 
     def display_error(self, message):
         pass
