@@ -43,6 +43,48 @@ class WeatherApp(QWidget):
         self.emoji_label.setObjectName("emoji_label")
         self.description_label.setObjectName("description_label")
 
+        # CSS styling
+        self.setStyleSheet("""
+            QLabel, QPushButton{
+                font-family: Comic Sans MS;
+            }
+            QLabel#city_label{
+                font-size: 40px;
+                font-weight: bold;
+            }
+            QLineEdit#city_input{
+                font-size: 40px;
+                font-family: Comic Sans MS;
+            }
+            QPushButton#get_weather_button{
+                font-size: 30px;
+                font-family: Comic Sans MS;
+                font-weight: bold;
+                color: white;
+                background-color: orange;
+                border: none;
+                border-radius: 5px;
+                padding: 5px
+            }
+            QPushButton#get_weather_button:hover{
+                background-color: #FFB040 ;
+            }
+            
+            QLabel#temperature_label{
+                font-size: 75px;
+                font-family: Comic Sans MS;
+                font-weight: bold;
+            }
+            QLabel#emoji_label{
+                font-size: 100px;
+                font-family: Segoe UI emoji;
+            }
+            QLabel#description_label{
+                font-size: 50px;
+                font-family: Comic Sans MS;
+            }
+        """)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
