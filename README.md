@@ -3,7 +3,7 @@
 # Installation
 - `pip install PyQt5`
 - `pip install requests`
-- `pip install python.dotenv`
+- `pip install python-dotenv`
 
 # Environmental Variables
 Create a .env file.  
