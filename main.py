@@ -21,9 +21,9 @@ class WeatherApp(QWidget):
         self.city_label = QLabel("Enter city name: ", self)
         self.city_input = QLineEdit(self)
         self.get_weather_button = QPushButton("Get Weather", self)
-        self.temperature_label = QLabel("70°F", self)
-        self.emoji_label = QLabel("😊", self)
-        self.description_label = QLabel("Sunny", self)
+        self.temperature_label = QLabel(self)
+        self.emoji_label = QLabel(self)
+        self.description_label = QLabel(self)
         self.initUI()
 
     def initUI(self):
@@ -105,7 +105,7 @@ class WeatherApp(QWidget):
 
         try:
             response = requests.get(url)
-            response.raise_for_status() # raise an exception if there is an HTTP Error
+            response.raise_for_status()  # raise an exception if there is an HTTP Error
             data = response.json()
 
             # print(data)
@@ -116,31 +116,42 @@ class WeatherApp(QWidget):
             # print(response.status_code)
             match response.status_code:
                 case 400:
-                    print("Bad Request!\nPlease check your input!")
+                    self.display_error("Bad Request!\nPlease check your input!")
                 case 401:
-                    print("Unauthorized!\nInvalid API key!")
+                    self.display_error("Unauthorized!\nInvalid API key!")
                 case 403:
-                    print("Forbidden!\nAccess is denied!")
+                    self.display_error("Forbidden!\nAccess is denied!")
                 case 404:
-                    print("Not Found!\nCity not found!")
+                    self.display_error(f"Not Found:\n{self.city_input.text()} not found!")
+                    self.city_input.setText(" ")
                 case 500:
-                    print("Internal Server Error!\nPlease try again later!")
+                    self.display_error("Internal Server Error!\nPlease try again later!")
                 case 502:
-                    print("Bad Gateway!\nInvalid response from the server!")
+                    self.display_error("Bad Gateway!\nInvalid response from the server!")
                 case 503:
-                    print("Service Unavailable!\nServer is down!")
+                    self.display_error("Service Unavailable!\nServer is down!")
                 case 504:
-                    print("Gateway Timeout!\nNo response from the server!")
+                    self.display_error("Gateway Timeout!\nNo response from the server!")
                 case _:
-                    print(f"HTTP error occurred!\n{http_error}")
-        except requests.exceptions.RequestException:
-            pass
+                    self.display_error(f"HTTP error occurred!\n{http_error}")
+
+        except requests.exceptions.ConnectionError:
+            self.display_error("Connection Error!\nCheck your internet connection!")
+
+        except requests.exceptions.Timeout:
+            self.display_error("Timeout Error!\nThe request timed out!")
+        except requests.exceptions.TooManyRedirects:
+            self.display_error("Too Many Redirects!\nCheck the URL!")
+        except requests.exceptions.RequestException as req_error:
+            self.display_error(f"Request Error!\n{req_error}")
 
     def display_error(self, message):
-        pass
+        self.temperature_label.setStyleSheet("font-size: 30px;"
+                                             "font-weight: normal;")
+        self.temperature_label.setText(message)
 
     def display_weather(self, data):
-        print(data)
+        pass
 
 
 if __name__ == "__main__":
